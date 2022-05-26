@@ -56,5 +56,7 @@ public class Electclass implements Serializable {
     @ApiModelProperty("成绩")
     private Integer cj;
 
+    @ApiModelProperty("绩点")
+    private Float point;
 
 }

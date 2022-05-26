@@ -8,7 +8,7 @@ import com.stu.spring_stu.common.Constants;
 import com.stu.spring_stu.common.Result;
 import com.stu.spring_stu.entity.Department;
 import com.stu.spring_stu.entity.Openclass;
-import com.sun.org.apache.bcel.internal.classfile.Code;
+//import com.sun.org.apache.bcel.internal.classfile.Code;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
