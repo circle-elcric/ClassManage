@@ -50,7 +50,9 @@
       </el-table-column>
       <el-table-column prop="time" label="开课时间" width="120">
       </el-table-column>
-      <el-table-column prop="cj" label="成绩">
+      <el-table-column prop="cj" label="成绩" width="100">
+      </el-table-column>
+      <el-table-column prop="point" label="绩点">
       </el-table-column>
       <el-table-column label="操作"  width="240" align="center">
         <template slot-scope="scope">
@@ -120,6 +122,7 @@ export default {
       xq:"",  //课程学期
       time:"",  //课程时间
       cj: "",  //成绩
+      point: "",//绩点
       multipleSelection: [],
       dialogFormVisible: false,
       form: {},

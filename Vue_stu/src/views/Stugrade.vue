@@ -16,7 +16,7 @@
 <!--      </el-radio-group>-->
 <!--    </div>-->
 
-    <el-card style="width: 800px;height: 550px">
+    <el-card style="width: 700px;height: 550px">
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
         <el-tab-pane label="秋季学期" name="first">
           <div id="grades1" style="width: 700px;height: 500px">
@@ -35,6 +35,28 @@
           </div>
         </el-tab-pane>
       </el-tabs>
+
+    </el-card>
+
+    <el-card style="width: 700px;height: 550px;top:16%;left:56%;position:absolute;">
+          <el-tabs v-model="activeName2" type="card" @tab-click="handleClick2">
+            <el-tab-pane label="秋季学期" name="first2">
+              <div id="grades12" style="width: 700px;height: 500px">
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="春季学期" name="second2">
+              <div id="grades22" style="width: 700px;height: 500px">
+            </div>
+            </el-tab-pane>
+            <el-tab-pane label="冬季学期" name="third2">
+              <div id="grades32" style="width: 700px;height: 500px">
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="夏季学期" name="fourth2">
+              <div id="grades42" style="width: 700px;height: 500px">
+              </div>
+            </el-tab-pane>
+          </el-tabs>
 
     </el-card>
   </div>
@@ -59,6 +81,7 @@ export default {
       xq:"秋",  //课程学期
       time:"",  //课程时间
       cj: "",  //成绩
+      point: "",  //成绩
       multipleSelection: [],
       dialogFormVisible: false,
       form: {},
@@ -69,7 +92,9 @@ export default {
       //echarts
       courseData:[],
       gradeData:[],
-      activeName: 'first'
+      pointData:[],
+      activeName: 'first',
+      activeName2: 'first2'
     }
   },
   created() {
@@ -78,7 +103,8 @@ export default {
   mounted() {
     //解决了Vue中数组push后显示为__ob__导致取不出来的问题
     setTimeout(()=>{
-      this.loadgradesbar(this.courseData,this.gradeData,'grades1')
+      this.loadgradesbar(this.courseData,this.gradeData,'grades1'),
+      this.loadgradesbar2(this.courseData,this.pointData,'grades12')
     },80)
   },
   methods:{
@@ -108,6 +134,32 @@ export default {
         },80)
       }
     },
+    handleClick2(tab, event) {
+          if(tab.name == 'first2'){
+            this.load('秋季学期')
+            setTimeout(()=>{
+              this.loadgradesbar2(this.courseData,this.pointData,'grades12')
+            },80)
+          }
+          else if(tab.name == 'second2'){
+            this.load('冬季学期')
+            setTimeout(()=>{
+              this.loadgradesbar2(this.courseData,this.pointData,'grades22')
+            },80)
+          }
+          else if(tab.name == 'third2'){
+            this.load('春季学期')
+            setTimeout(()=>{
+              this.loadgradesbar2(this.courseData,this.pointData,'grades32')
+            },80)
+          }
+          else if(tab.name == 'fourth2'){
+            this.load('冬季学期')
+            setTimeout(()=>{
+              this.loadgradesbar2(this.courseData,this.pointData,'grades42')
+            },80)
+          }
+        },
     load(val){
       this.request.get("http://localhost:9090/electclass/gradepage",{
         params: {
@@ -121,6 +173,7 @@ export default {
       }).then(res =>{
         this.courseData = []
         this.gradeData = []
+        this.pointData = []
         console.log(res)
         console.log(this.user)
         this.tableData = res.records
@@ -129,6 +182,7 @@ export default {
         for(let i = 0;i<len;i++){
           this.courseData.push(this.tableData[i].cname)
           this.gradeData.push(this.tableData[i].cj)
+          this.pointData.push(this.tableData[i].point)
         }
         console.log(this.courseData)
       })
@@ -165,6 +219,38 @@ export default {
       }
       myChart.setOption(option)
     },
+    loadgradesbar2(courseData,pointData,stringId){
+
+          let chartDom = document.getElementById(stringId)
+          let myChart = echarts.init(chartDom)
+          let option
+          console.log(this.pointData)
+          option={
+            xAxis: {
+              type: 'category',
+              data:courseData
+            },
+            yAxis: {
+              type: 'value'
+            },
+            series: [
+              {
+                data:pointData,
+                type: 'bar',
+                barWidth: '60%',
+                itemStyle: {
+                  barBorderRadius: 5,
+                  borderWidth: 1,
+                  borderType: 'solid',
+                  borderColor: '#73c0de',
+                  shadowColor: '#5368c7',
+                  shadowBlur: 3,
+                }
+              }
+            ]
+          }
+          myChart.setOption(option)
+        },
 
   }
 }
